@@ -1,7 +1,7 @@
 # 정보처리기사 실기 · SQL 통합 문제
 
-- 수록 범위: 2022년 3회 ~ 2025년 3회
-- 총 문제 수: 14문제
+- 수록 범위: 2022년 3회 ~ 2026년 1회 (+ 2020년 1회 ~ 2022년 2회 선별 수록)
+- 총 문제 수: 26문제
 - SQL문 작성, SQL 실행 결과, SELECT·JOIN·집계·서브쿼리 등의 문제를 포함합니다.
 - 관계대수와 데이터베이스 용어 문제는 이론(용어) 파일에 수록했습니다.
 
@@ -477,6 +477,239 @@ WHERE COL1 IN (2, 3)
 
 답: 4
 (WHERE 조건에 5행 모두 해당하지만 COUNT(COL2)는 NULL 제외 → 4)
+
+---
+
+---
+
+## 2026년 1회 · 문제 9
+
+- 출처: `2026년_1회.md`
+- 분류: SQL
+
+아래 조건을 참고하여 각 SQL 구문을 실행했을 때 반환되는 행(Row)의 수를 쓰시오. (단, DEPT 칼럼은 학과명이다.)
+
+〈테이블 조건〉
+STUDENT 테이블에는 다음 세 학과의 학생 정보가 저장되어 있다.
+컴퓨터과 50명 · 인터넷과 100명 · 사무자동화과 50명
+
+〈SQL 구문〉
+1. `SELECT DEPT FROM STUDENT;`
+2. `SELECT DISTINCT DEPT FROM STUDENT;`
+3. `SELECT COUNT(DISTINCT DEPT) FROM STUDENT WHERE DEPT = '컴퓨터과';`
+
+답:
+- 1. 200
+- 2. 3
+- 3. 1
+
+---
+
+---
+
+## 2026년 1회 · 문제 10
+
+- 출처: `2026년_1회.md`
+- 분류: SQL
+
+아래는 선수(PLAYER) 정보를 관리하는 테이블을 정의하는 SQL 문이다. 팀(TEAM) 테이블의 특정 칼럼을 참조하는 외래키 제약 조건을 추가하려 할 때, 괄호 ①~⑤에 들어갈 적절한 예약어(keyword) 또는 칼럼명을 아래 조건을 참고하여 쓰시오.
+
+〈조건〉
+- 외래키 제약 조건의 이름은 TEAM_TF로 지정한다.
+- PLAYER 테이블의 TEAM_ID 칼럼이 외래키 역할을 한다.
+- TEAM 테이블의 TEAM_ID2 칼럼을 참조 대상으로 한다.
+
+```sql
+CREATE TABLE PLAYER (
+  PLAYER_ID   CHAR(7)      NOT NULL,
+  PLAYER_NAME VARCHAR2(20) NOT NULL,
+  TEAM_ID     CHAR(3)      NOT NULL,
+  PRIMARY KEY (PLAYER_ID),
+  ( ① ) TEAM_TF
+  ( ② ) KEY ( ③ )
+  ( ④ ) TEAM ( ⑤ )
+);
+```
+
+답:
+- ① CONSTRAINT
+- ② FOREIGN
+- ③ TEAM_ID
+- ④ REFERENCES
+- ⑤ TEAM_ID2
+(CONSTRAINT 제약명 FOREIGN KEY (열) REFERENCES 테이블(열))
+
+---
+
+---
+
+## 2026년 1회 · 문제 18
+
+- 출처: `2026년_1회.md`
+- 분류: SQL
+
+다음은 SQL에 대한 문제이다. 아래 코드를 확인하여 알맞은 출력값을 작성하시오.
+
+```sql
+SELECT COUNT(*)
+FROM employee e
+JOIN dept d ON e.dep_id = d.dept_id
+WHERE d.budget > (
+    SELECT AVG(budget) FROM dept
+);
+```
+
+답: 2
+(부서 예산 평균보다 예산이 큰 부서에 속한 직원 수. ※ 복원본에 employee/dept 테이블 데이터가 누락되어 있음 — 정답은 복원 답안 기준)
+
+---
+
+---
+
+## 2020년 2회 · 문제 6
+
+- 출처: 복원 문제(chobopark.tistory.com)
+- 분류: SQL
+
+학생 테이블(학번, 이름, 학년, 수강과목, 점수, 연락처)에서 아래 조건을 만족하는 SQL문을 작성하시오.
+
+1) 3, 4학년인 학번, 이름을 조회한다.
+2) IN 연산자를 사용해야 한다.
+
+답: SELECT 학번, 이름 FROM 학생 WHERE 학년 IN (3, 4);
+
+---
+
+---
+
+## 2020년 2회 · 문제 12
+
+- 출처: 복원 문제(chobopark.tistory.com)
+- 분류: SQL
+
+학생 테이블의 NAME 속성에 IDX_NAME이라는 이름으로 인덱스를 생성하는 SQL문을 작성하시오.
+
+답: CREATE INDEX IDX_NAME ON 학생(NAME);
+
+---
+
+---
+
+## 2020년 3회 · 문제 20
+
+- 출처: 복원 문제(chobopark.tistory.com)
+- 분류: SQL
+
+학생 테이블에 주소 속성을 추가하는 SQL문의 괄호를 채우시오.
+
+( ① ) TABLE 학생 ( ② ) 주소 VARCHAR(20);
+
+답:
+- ① ALTER
+- ② ADD
+(속성 삭제는 DROP COLUMN, 변경은 ALTER/MODIFY)
+
+---
+
+---
+
+## 2020년 4회 · 문제 16
+
+- 출처: 복원 문제(chobopark.tistory.com)
+- 분류: SQL
+
+다음 조건을 만족하면서 학과별로 튜플 수가 얼마인지 구하는 SQL문을 작성하시오.
+
+- WHERE 구문을 사용하지 않는다. / GROUP BY를 사용한다. / 별칭(AS)을 사용해야 한다. / 집계 함수를 사용해야 한다.
+- 〈학생〉 테이블: 학과(전기 1명, 컴퓨터 2명, 전자 2명), 결과 속성: 학과, 학과별튜플수
+
+답: SELECT 학과, COUNT(학과) AS '학과별튜플수' FROM 학생 GROUP BY 학과;
+(처리조건에 "별칭은 작은따옴표 사용"이 명시된 회차라 따옴표 포함 표기)
+
+---
+
+---
+
+## 2021년 2회 · 문제 6
+
+- 출처: 복원 문제(chobopark.tistory.com)
+- 분류: SQL
+
+다음 SQL에서 JOIN할 경우 괄호 안에 알맞은 답을 쓰시오.
+
+SELECT ... FROM 학생정보 a JOIN 학과정보 b ( ① ) a.학과 = b.( ② )
+
+답:
+- ① ON
+- ② 학과
+
+---
+
+---
+
+## 2021년 2회 · 문제 10
+
+- 출처: 복원 문제(chobopark.tistory.com)
+- 분류: SQL
+
+'이름' 컬럼에서 '이'로 시작하는 문자열을 내림차순 정렬하는 쿼리의 괄호를 채우시오.
+
+SELECT ... FROM ... WHERE 이름 LIKE ( ① ) ORDER BY 컬럼명 ( ② )
+
+답:
+- ① '이%'
+- ② DESC
+
+---
+
+---
+
+## 2021년 3회 · 문제 3
+
+- 출처: 복원 문제(chobopark.tistory.com)
+- 분류: SQL
+
+GRANT의 기능에 대해 간략하게 약술하시오.
+
+답: 사용자(User)에게 접속 권한, 오브젝트 생성 권한, DBA 권한 등을 부여하는 명령어
+(↔ REVOKE: 부여한 권한을 회수하는 명령어. 둘 다 DCL)
+
+---
+
+---
+
+## 2022년 1회 · 문제 4
+
+- 출처: 복원 문제(chobopark.tistory.com)
+- 분류: SQL
+
+점수(score)를 기준으로 내림차순 정렬하여 조회하는 SQL문의 괄호를 채우시오.
+
+SELECT name, score FROM 성적 ( ① ) BY ( ② ) ( ③ )
+
+답:
+- ① ORDER
+- ② score
+- ③ DESC
+(※ 복원본의 결과 그림은 소실되었으나 정렬 쿼리 구문 문제)
+
+---
+
+---
+
+## 2022년 2회 · 문제 3
+
+- 출처: 복원 문제(chobopark.tistory.com)
+- 분류: SQL
+
+H회사의 전체 제품 단가보다 큰 제품을 출력하고자 한다. 괄호 안에 들어갈 알맞은 용어를 쓰시오.
+
+SELECT 제조사, 제품명, 단가
+FROM 제품
+WHERE 단가 > ( ) (SELECT 단가 FROM 제품 WHERE 제조사 = 'H')
+
+답: ALL
+(ALL: 서브쿼리의 모든 값보다 커야 함 / ANY(SOME): 하나라도 크면 됨)
 
 ---
 

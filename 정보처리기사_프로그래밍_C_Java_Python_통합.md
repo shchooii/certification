@@ -1,13 +1,13 @@
 # 정보처리기사 실기 · 프로그래밍 통합 문제
 
-- 수록 범위: 2022년 3회 ~ 2025년 3회
-- 총 문제 수: 83문제
-- C 40문제 / Java 32문제 / Python 11문제
+- 수록 범위: 2022년 3회 ~ 2026년 1회
+- 총 문제 수: 91문제
+- C 43문제 / Java 34문제 / Python 14문제
 - 각 언어별로 나눈 뒤, 회차와 문제 번호 순으로 정리했습니다.
 
 ---
 
-# C 문제 (40문제)
+# C 문제 (43문제)
 
 ---
 
@@ -732,6 +732,65 @@ int main( ) {
 
 답: 변환된 문자열 : Nd sc 1
 (I→N, t→d, i→s, s→c, 8→1, 공백은 그대로)
+
+---
+
+---
+
+## 2024년 1회 · 문제 20 (복원 보완)
+
+- 출처: `2024년_1회.md` (복원 문제로 보완)
+- 분류: 프로그래밍
+- 언어: C
+
+다음 C 언어로 구현된 프로그램을 분석하여 그 실행 결과를 쓰시오. (단, 출력문의 출력 서식을 준수하시오.)
+
+```c
+#include <stdio.h>
+typedef struct {
+    int accNum;
+    double bal;
+} BankAcc;
+
+double sim_pow(double base, int year) {
+    int i;
+    double r = 1.0;
+    for (i = 0; i < year; i++) {
+        r = r * base;
+    }
+    return r;
+}
+
+void initAcc(BankAcc *acc, int x, double y) {
+    acc->accNum = x;
+    acc->bal = y;
+}
+
+void xxx(BankAcc *acc, double *en) {
+    if (*en > 0 && *en < acc->bal) {
+        acc->bal = acc->bal - *en;
+    } else {
+        acc->bal = acc->bal + *en;
+    }
+}
+
+void yyy(BankAcc *acc) {
+    acc->bal = acc->bal * sim_pow((1 + 0.1), 3);
+}
+
+int main() {
+    BankAcc myAcc;
+    initAcc(&myAcc, 9981, 2200.0);
+    double amount = 100.0;
+    xxx(&myAcc, &amount);
+    yyy(&myAcc);
+    printf("%d and %.2f", myAcc.accNum, myAcc.bal);
+    return 0;
+}
+```
+
+답: 9981 and 2795.10
+(출금 2200-100 = 2100 → 2100 × 1.1³ = 2795.1 → %.2f로 2795.10)
 
 ---
 
@@ -1508,7 +1567,87 @@ int main( ) {
 
 ---
 
-# Java 문제 (32문제)
+## 2026년 1회 · 문제 1
+
+- 출처: `2026년_1회.md`
+- 분류: 프로그래밍
+- 언어: C
+
+다음 C 언어로 구현된 프로그램을 분석하여 그 실행 결과를 쓰시오. (단, 출력문의 출력 서식을 준수하시오.)
+
+```c
+#include <stdio.h>
+
+double arr1(int p[], int len) {
+    double av = 0;
+    int i;
+    for (i = 0; i < len; i++) {
+        av += (double) p[i];
+    }
+    return av / len;
+}
+
+double arr2(int *p, int len) {
+    double av = 0;
+    int i;
+    for (i = 0; i < len; i++) {
+        av += (double)(*(p + i));
+    }
+    return av / len;
+}
+
+int main() {
+    int arr[10] = {80, 20, 50, 55, 45, 95, 55, 10, 40, 80};
+    int len = 10;
+
+    printf("%.2f", arr1(arr, len) + arr2(arr, len));
+
+    return 0;
+}
+```
+
+답: 106.00
+(합 530 → 평균 53.0, 두 함수는 같은 계산 → 53+53 = 106, %.2f → 106.00)
+
+---
+
+---
+
+## 2026년 1회 · 문제 12
+
+- 출처: `2026년_1회.md`
+- 분류: 프로그래밍
+- 언어: C
+
+다음 C 언어로 구현된 프로그램을 분석하여 그 실행 결과를 쓰시오. (단, 출력문의 출력 서식을 준수하시오.)
+
+```c
+#include <stdio.h>
+struct fns {
+    int* (*fn)(int*);
+} mine;
+
+int* dummy(int *d) {
+    return d + 1;
+}
+
+int main() {
+    struct fns mine;
+    int n[] = {16, 32};
+    mine.fn = dummy;
+    printf("%x", *mine.fn(n));
+    return 0;
+}
+```
+
+답: 20
+(dummy(n) = n+1 → n[1] = 32 → %x는 16진수 출력 → 20)
+
+---
+
+---
+
+# Java 문제 (34문제)
 
 ---
 
@@ -2749,7 +2888,75 @@ public class Main {
 
 ---
 
-# Python 문제 (11문제)
+## 2026년 1회 · 문제 7
+
+- 출처: `2026년_1회.md`
+- 분류: 프로그래밍
+- 언어: Java
+
+다음 Java로 구현된 프로그램을 분석하여 그 실행 결과를 쓰시오. (단, 출력문의 출력 서식을 준수하시오.)
+
+```java
+class A {
+    String f(Object x) {
+        return "1";
+    }
+    String g() {
+        return f("a");
+    }
+}
+
+class B extends A {
+    String f(Object x) {
+        return "2";
+    }
+    String f(String x) {
+        return "3";
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        A a = new B();
+        System.out.println(a.g());
+    }
+}
+```
+
+답: 2
+(오버로딩은 컴파일 시 결정: A의 g() 안에서는 f(Object)만 보임 → 실행 시 B의 오버라이딩된 f(Object)로 동적 바인딩 → "2")
+
+---
+
+---
+
+## 2026년 1회 · 문제 17
+
+- 출처: `2026년_1회.md`
+- 분류: 프로그래밍
+- 언어: Java
+
+다음 Java로 구현된 프로그램을 분석하여 그 실행 결과를 쓰시오. (단, 출력문의 출력 서식을 준수하시오.)
+
+```java
+public class Main {
+    public static void main(String[] args) {
+        int x1 = 9;
+        int x2 = 2;
+        String x3 = "3";
+        System.out.println(x1 + x2 + "2" + x3);
+    }
+}
+```
+
+답: 1123
+(왼쪽부터 계산: 9+2 = 11(정수 덧셈) → "11"+"2" = "112" → +"3" = "1123")
+
+---
+
+---
+
+# Python 문제 (14문제)
 
 ---
 
@@ -3042,6 +3249,79 @@ print(result)
 
 답:
 - ① 15 / ② 5 / ③ 10 / ④ 3 / ⑤ 18 / ⑥ 5 / ⑦ 9 / ⑧ 2
+
+---
+
+---
+
+## 2026년 1회 · 문제 8
+
+- 출처: `2026년_1회.md`
+- 분류: 프로그래밍
+- 언어: Python
+
+아래 Python 코드가 있다. 입력값으로 HumanDev를 주었을 때 출력되는 결과를 쓰시오.
+
+```python
+i = input()
+x = []
+for word in i.split():
+    x.append(word)
+y = ''.join(x)
+z = ''.join(c for c in y[::-1] if c not in 'ong')
+print(z)
+```
+
+답: veDamuH
+("HumanDev" 역순 → "veDnamuH", 'o','n','g' 제거 → 'n' 하나 삭제 → "veDamuH")
+
+---
+
+---
+
+## 2026년 1회 · 문제 13
+
+- 출처: `2026년_1회.md`
+- 분류: 프로그래밍
+- 언어: Python
+
+다음 Python으로 구현된 프로그램을 분석하여 그 실행 결과를 쓰시오. (단, 출력문의 출력 서식을 준수하시오.)
+
+```python
+lst = list(range(10))
+for c in lst[::-2]:
+    print(c, end='A')
+print()
+```
+
+답: 9A7A5A3A1A
+(lst[::-2] → [9, 7, 5, 3, 1], 각 원소 뒤에 'A')
+
+---
+
+---
+
+## 2026년 1회 · 문제 14
+
+- 출처: `2026년_1회.md`
+- 분류: 프로그래밍
+- 언어: Python
+
+아래 Python 코드를 실행했을 때 출력되는 값을 쓰시오.
+
+```python
+def f(a):
+    m = [[x] for x in a]
+    b = m[:]
+    for i in range(len(b) - 1):
+        b[i+1] += b[i]
+    return sum(len(x) for x in m)
+
+print(f([1, 2, 3, 4]))
+```
+
+답: 10
+(b = m[:]는 얕은 복사 → 내부 리스트 공유. += 는 내부 리스트를 제자리 확장하므로 m도 변경 → 길이 1+2+3+4 = 10)
 
 ---
 
