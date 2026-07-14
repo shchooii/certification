@@ -47,8 +47,8 @@ INSERT INTO 직원 VALUES(1007, 30, '박미경');
    `SELECT DISTINCT COUNT(부서코드) FROM 직원;`
 
 답:
-- ①
-- ②
+- ① 3 (부서코드=20인 직원 3명 → COUNT 결과 3, DISTINCT는 결과 1행에 적용되므로 그대로 3)
+- ② 4 (ON DELETE CASCADE로 기획부 직원 3명 함께 삭제 → 7-3 = 4)
 
 ---
 
@@ -66,9 +66,9 @@ INSERT INTO 직원 VALUES(1007, 30, '박미경');
 ③ `SELECT COUNT(DISTINCT DEPT) FROM STUDENT WHERE DEPT = '전산과';`
 
 답:
-- ①
-- ②
-- ③
+- ① 200 (전체 튜플 수, 중복 제거 없음)
+- ② 3 (DISTINCT → 전기과, 전산과, 전자과)
+- ③ 1 (COUNT 결과는 항상 1행)
 
 ---
 
@@ -86,7 +86,7 @@ INSERT INTO 직원 VALUES(1007, 30, '박미경');
 - 명령문 마지막의 세미콜론(;)은 생략이 가능하다.
 - 인용 부호가 필요한 경우 작은따옴표(' ')를 사용한다.
 
-답:
+답: DELETE FROM 학생 WHERE 이름 = '민수'
 
 ---
 
@@ -125,7 +125,7 @@ INSERT INTO 직원 VALUES(1007, 30, '박미경');
 - 명령문 마지막의 세미콜론(;)은 생략이 가능하다.
 - 인용 부호가 필요한 경우 작은따옴표(' ')를 사용한다.
 
-답:
+답: SELECT 과목이름, MIN(점수) AS 최소점수, MAX(점수) AS 최대점수 FROM 성적 GROUP BY 과목이름 HAVING AVG(점수) >= 90
 
 ---
 
@@ -152,7 +152,8 @@ INSERT INTO 직원 VALUES(1007, 30, '박미경');
 - 명령문 마지막의 세미콜론(;)은 생략이 가능하다.
 - 인용 부호가 필요한 경우 작은따옴표(' ')를 사용한다.
 
-답:
+답: INSERT INTO 학생 VALUES (9816021, '한국산', 3, '경영학개론', '050-1234-1234')
+(모든 속성에 값을 넣으므로 속성명 목록 생략 가능)
 
 ---
 
@@ -174,7 +175,8 @@ INSERT INTO 직원 VALUES(1007, 30, '박미경');
 DROP VIEW 학생 (        );
 ```
 
-답:
+답: CASCADE
+(참조 데이터까지 연쇄 삭제 ↔ RESTRICT는 참조 중이면 삭제 취소)
 
 ---
 
@@ -211,6 +213,15 @@ ORDER BY A DESC;
 
 답:
 
+| A |
+|---|
+| 4 |
+| 3 |
+| 2 |
+| 1 |
+
+(UNION은 중복 제거 → {1,2,3,4}를 내림차순 정렬)
+
 ---
 
 ---
@@ -245,6 +256,13 @@ WHERE C IN (SELECT C FROM R2 WHERE D='k');
 
 답:
 
+| B |
+|---|
+| a |
+| b |
+
+(R2에서 D='k'인 C는 x, y → R1에서 C가 x, y인 행의 B = a, b)
+
 ---
 
 ---
@@ -268,7 +286,8 @@ WHERE C IN (SELECT C FROM R2 WHERE D='k');
 SELECT COUNT(*) FROM EMP_TBL WHERE EMPNO > 100 AND SAL >= 3000 OR EMPNO = 200;
 ```
 
-답:
+답: 1
+(AND가 OR보다 우선 → (EMPNO>100 AND SAL>=3000) OR EMPNO=200 → EMPNO 200 한 행만 해당)
 
 ---
 
@@ -310,10 +329,10 @@ UPDATE 학생 ( ④ ) 학과 = '휴학' WHERE 학번 = 240912;
 ```
 
 답:
-- ①
-- ②
-- ③
-- ④
+- ① VALUES
+- ② SELECT
+- ③ FROM
+- ④ SET
 
 ---
 
@@ -351,7 +370,8 @@ WHERE p.name IN (
 );
 ```
 
-답:
+답: 1
+(HAVING count(*)<2인 project_id = 20 → name 'Beta' → 조인 결과 5행 중 Beta에 해당하는 행은 Jim 1건)
 
 ---
 
@@ -389,6 +409,12 @@ WHERE emp.id = sal.id and incentive >= 500;
 
 답:
 
+| name | incentive |
+|------|-----------|
+| 이순신 | 1000 |
+
+(id 일치: 1002, 1004, 1008 중 incentive >= 500은 1008 이순신뿐)
+
 ---
 
 ---
@@ -418,7 +444,8 @@ WHERE emp.id = sal.id and incentive >= 500;
 SELECT COUNT(*) CNT FROM A CROSS JOIN B WHERE A.NAME LIKE B.RULE;
 ```
 
-답:
+답: 4
+(CROSS JOIN 6행 중 LIKE 만족: Smith-'S%', Scott-'S%', Smith-'%T%', Scott-'%T%' → 4)
 
 ---
 
@@ -448,7 +475,8 @@ WHERE COL1 IN (2, 3)
     OR COL2 IN (3, 5);
 ```
 
-답:
+답: 4
+(WHERE 조건에 5행 모두 해당하지만 COUNT(COL2)는 NULL 제외 → 4)
 
 ---
 
